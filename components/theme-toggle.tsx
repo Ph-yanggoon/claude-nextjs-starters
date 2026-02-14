@@ -34,7 +34,7 @@ export function ThemeToggle() {
       ) : (
         <Moon className="size-4" />
       )}
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">테마 전환</span>
     </Button>
   )
 }

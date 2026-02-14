@@ -25,19 +25,31 @@ import {
 } from "@/components/ui/sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-const navGroups = [
+interface NavItem {
+  title: string
+  href: string
+  icon: typeof LayoutDashboard
+  disabled?: boolean
+}
+
+interface NavGroup {
+  label: string
+  items: NavItem[]
+}
+
+const navGroups: NavGroup[] = [
   {
     label: "개요",
     items: [
       { title: "대시보드", href: "/dashboard", icon: LayoutDashboard },
-      { title: "분석", href: "/dashboard#analytics", icon: BarChart3 },
+      { title: "분석", href: "#", icon: BarChart3, disabled: true },
     ],
   },
   {
     label: "관리",
     items: [
-      { title: "사용자", href: "/dashboard#users", icon: Users },
-      { title: "설정", href: "/dashboard#settings", icon: Settings },
+      { title: "사용자", href: "#", icon: Users, disabled: true },
+      { title: "설정", href: "#", icon: Settings, disabled: true },
     ],
   },
 ]
@@ -75,16 +87,27 @@ export function AppSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname === item.href}
-                      tooltip={item.title}
-                    >
-                      <Link href={item.href}>
+                    {item.disabled ? (
+                      <SidebarMenuButton
+                        disabled
+                        tooltip={item.title}
+                        className="opacity-50"
+                      >
                         <item.icon />
                         <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
+                      </SidebarMenuButton>
+                    ) : (
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname === item.href}
+                        tooltip={item.title}
+                      >
+                        <Link href={item.href}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    )}
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>

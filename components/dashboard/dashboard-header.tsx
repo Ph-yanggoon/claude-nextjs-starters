@@ -25,9 +25,17 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
+const pageTitles: Record<string, string> = {
+  "/dashboard": "대시보드",
+  "/dashboard/analytics": "분석",
+  "/dashboard/users": "사용자",
+  "/dashboard/settings": "설정",
+}
+
 export function DashboardHeader() {
   const pathname = usePathname()
-  const pageTitle = pathname === "/dashboard" ? "대시보드" : "대시보드"
+  const pageTitle = pageTitles[pathname] ?? "대시보드"
+  const isSubPage = pathname !== "/dashboard"
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
@@ -40,9 +48,21 @@ export function DashboardHeader() {
             <BreadcrumbLink href="/">홈</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="hidden md:block" />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
-          </BreadcrumbItem>
+          {isSubPage ? (
+            <>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/dashboard">대시보드</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          ) : (
+            <BreadcrumbItem>
+              <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
+            </BreadcrumbItem>
+          )}
         </BreadcrumbList>
       </Breadcrumb>
 
